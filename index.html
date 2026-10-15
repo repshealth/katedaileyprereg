@@ -123,9 +123,8 @@ footer{position:relative;z-index:2;text-align:center;font-size:12px;color:var(--
     <form id="wl" class="up a3" novalidate>
       <div class="field"><input id="name" name="name" type="text" autocomplete="given-name" placeholder=" " required><label for="name">First name</label><div class="msg">Pop your name in</div></div>
       <div class="field"><input id="email" name="email" type="email" autocomplete="email" placeholder=" " required><label for="email">Email</label><div class="msg">That email doesn't look quite right</div></div>
-      <div class="field"><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder=" " required><label for="phone">Phone number</label><div class="msg">Add your number so we can text you when it opens</div></div>
       <button type="submit" id="go">Join The Waitlist <span class="arr">→</span></button>
-      <p class="consent">By joining you agree to get emails and texts from Dailey Demolition about the challenge. Unsubscribe anytime.</p>
+      <p class="consent">By joining you agree to get emails from Dailey Demolition about the challenge. Unsubscribe anytime.</p>
     </form>
     <div class="perks up a3"><span>30 days</span><span>All inside the new app</span><span>First access for the waitlist</span></div>
   </div>
@@ -150,8 +149,7 @@ const THANK_YOU_URL='thank-you.html';
 const f=document.getElementById('wl'),btn=document.getElementById('go');
 const checks={
   name:v=>v.trim().length>0,
-  email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
-  phone:v=>v.replace(/\D/g,'').length>=7
+  email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
 };
 const validate=el=>{const ok=checks[el.name](el.value);el.parentElement.classList.toggle('err',!ok);return ok};
 f.querySelectorAll('input').forEach(el=>{el.addEventListener('blur',()=>{if(el.value)validate(el)});el.addEventListener('input',()=>{if(el.parentElement.classList.contains('err'))validate(el)})});
@@ -159,7 +157,7 @@ f.addEventListener('submit',async e=>{
   e.preventDefault();
   const els=[...f.querySelectorAll('input')];const bad=els.filter(el=>!validate(el));
   if(bad.length){bad[0].focus();return}
-  const data={name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value.trim(),source:'30 Day Bring It Home Challenge waitlist',page:location.href};
+  const data={name:f.name.value.trim(),email:f.email.value.trim(),source:'30 Day Bring It Home Challenge waitlist',page:location.href};
   btn.disabled=true;btn.firstChild.textContent='Saving your spot… ';
   if(WEBHOOK_URL){try{await fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch(err){}}
   try{sessionStorage.setItem('dd_name',data.name)}catch(err){}
