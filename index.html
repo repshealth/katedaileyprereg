@@ -142,8 +142,9 @@ footer{position:relative;z-index:2;text-align:center;font-size:12px;color:var(--
 
 <script>
 // ===== SETTINGS =====
-// Paste your form webhook / CRM endpoint here (MailerLite, GoHighLevel, Zapier etc). Leave blank to just go to the thank you page.
-const WEBHOOK_URL='';
+// Waitlist sign ups go into Dailey Demolition's leads in the REPS dashboard (source: Pre-registration).
+const WEBHOOK_URL='https://dashboard.jolly-heart-2b8d.workers.dev/api/forms';
+const CLIENT='dailey-demolition';
 const THANK_YOU_URL='thank-you.html';
 // ====================
 const f=document.getElementById('wl'),btn=document.getElementById('go');
@@ -157,9 +158,13 @@ f.addEventListener('submit',async e=>{
   e.preventDefault();
   const els=[...f.querySelectorAll('input')];const bad=els.filter(el=>!validate(el));
   if(bad.length){bad[0].focus();return}
-  const data={name:f.name.value.trim(),email:f.email.value.trim(),source:'30 Day Bring It Home Challenge waitlist',page:location.href};
+  const data={client:CLIENT,name:f.name.value.trim(),email:f.email.value.trim().toLowerCase(),source:'prereg',form:'Bring It Home waitlist',page:location.pathname||'/'};
   btn.disabled=true;btn.firstChild.textContent='Saving your spot… ';
-  if(WEBHOOK_URL){try{await fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch(err){}}
+  if(WEBHOOK_URL){
+    // Wait for the dashboard (up to 4 seconds) so the sign up isn't lost when the page changes.
+    const send=fetch(WEBHOOK_URL,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(err=>console.error('Dailey: the sign up did not reach the dashboard',err));
+    await Promise.race([send,new Promise(r=>setTimeout(r,4000))]);
+  }
   try{sessionStorage.setItem('dd_name',data.name)}catch(err){}
   location.href=THANK_YOU_URL+'?name='+encodeURIComponent(data.name);
 });
