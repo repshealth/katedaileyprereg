@@ -955,8 +955,8 @@ const PRICES={
   CAD:{yearly:{was:355,now:213},quarterly:{was:105,now:84}}
 };
 const LINKS={
-  USD:{yearly:'#CHECKOUT-BF-USD-ANNUAL',quarterly:'#CHECKOUT-BF-USD-QUARTERLY'},
-  CAD:{yearly:'#CHECKOUT-BF-CAD-ANNUAL',quarterly:'#CHECKOUT-BF-CAD-QUARTERLY'}
+  USD:{yearly:'https://plans.daileydemolition.com/p/black-friday-dailey-demolition-membership-usd/yearly',quarterly:'https://plans.daileydemolition.com/p/black-friday-dailey-demolition-membership-usd/3-month'},
+  CAD:{yearly:'https://plans.daileydemolition.com/p/black-friday-dailey-demolition-membership-cad/yearly',quarterly:'https://plans.daileydemolition.com/p/black-friday-dailey-demolition-membership-cad/3-month'}
 };
 // ==========================================================
 const isCA=(()=>{try{const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';const langs=(navigator.languages||[navigator.language||'']).join(',');return /-CA\b/i.test(langs)||/^America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|St_Johns|Regina|Montreal|Moncton|Whitehorse|Yellowknife|Iqaluit|Glace_Bay|Goose_Bay|Swift_Current|Dawson_Creek|Fort_Nelson|Creston|Rankin_Inlet|Cambridge_Bay|Inuvik|Atikokan|Blanc-Sablon)$/.test(tz)}catch(e){return false}})();
